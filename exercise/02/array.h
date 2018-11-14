@@ -2,10 +2,16 @@
 class array
 {
 	double* p;
-	int n;
+	int n = 0;
 public:
-	array();
+	array() {};
 	array(int size, double value);
+	array(const array& other);
+	array(array&& other) noexcept;
+	array& operator=(array other);
+	array& operator=(array&& other);
+	~array();
+
 	int size() const;
 	double at(int index) const;
 };
