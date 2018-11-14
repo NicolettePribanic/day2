@@ -2,9 +2,9 @@
 class array
 {
 	double* p;
-	int n = 0;
+	int n;
 public:
-	array() {};
+	array() : n(0), p(nullptr) {};
 	array(int size, double value);
 	array(const array& other);
 	array(array&& other) noexcept;

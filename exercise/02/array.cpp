@@ -4,15 +4,20 @@
 
 array::array(int size, double value)
 {
-	if (size < 0) return;
+	if (size < 0) throw std::out_of_range("Size is too small!");
 	n = size;
 	p = new double[size];
 	std::fill(p, p + size, value);
 }
 
-array::array(const array & other) : n(other.n), p (other.p) {}
+array::array(const array & other)
+{
+	n = other.n;
+	p = new double[n];
+	std::copy(other.p, other.p + n, p);
+}
 
-array::array(array && other) noexcept : n(std::exchange(other.n, 0)), p(std::move(other.p)) {}
+array::array(array && other) noexcept : n(std::exchange(other.n, 0)), p(std::exchange(other.p, nullptr)) {}
 
 array & array::operator=(array other)
 {
@@ -28,7 +33,14 @@ array & array::operator=(array && other)
 	return *this;
 }
 
-array::~array() {}
+array::~array()
+{
+	if (p == nullptr) return;
+	delete[] p;
+	p = nullptr;
+	n = 0;
+
+}
 
 int array::size() const
 {
